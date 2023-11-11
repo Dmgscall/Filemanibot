@@ -85,7 +85,7 @@ async def start_command(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton("😊 About Me", callback_data = "about"),
-                    InlineKeyboardButton("🔒 unlock", url="https://shrs.link/FUmxXe")
+                    InlineKeyboardButton("🔔 Jion", url="https://t.me/update_channel45")
                 ]
             ]
         )
