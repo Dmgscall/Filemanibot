@@ -1,4 +1,3 @@
-
 import os
 import asyncio
 from pyrogram import Client, filters, __version__
@@ -7,9 +6,11 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, 
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 
 from bot import Bot
-from config import *
+from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT
 from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
+
+
 
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
@@ -57,8 +58,6 @@ async def start_command(client: Client, message: Message):
             return
         await temp_msg.delete()
 
-        snt_msgs = []
-        
         for msg in messages:
 
             if bool(CUSTOM_CAPTION) & bool(msg.document):
@@ -72,24 +71,13 @@ async def start_command(client: Client, message: Message):
                 reply_markup = None
 
             try:
-                snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
+                await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
                 await asyncio.sleep(0.5)
-                snt_msgs.append(snt_msg)
             except FloodWait as e:
                 await asyncio.sleep(e.x)
-                snt_msg = await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
-                snt_msgs.append(snt_msg)
+                await msg.copy(chat_id=message.from_user.id, caption = caption, parse_mode = ParseMode.HTML, reply_markup = reply_markup, protect_content=PROTECT_CONTENT)
             except:
                 pass
-        await message.reply_text("**Files will be deleted in 5 minutes.**\n__Forward to saved messages before downloading__")
-        await asyncio.sleep(SECONDS)
-
-        for snt_msg in snt_msgs:
-            try:
-                await snt_msg.delete()
-            except:
-                pass
-                
         return
     else:
         reply_markup = InlineKeyboardMarkup(
@@ -209,4 +197,4 @@ Unsuccessful: <code>{unsuccessful}</code></b>"""
     else:
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
-        await msg.delete()
+        await msg.delete()ep(8)        await msg.delete()
